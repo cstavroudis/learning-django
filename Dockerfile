@@ -1,9 +1,19 @@
-# syntax=docker/dockerfile:1
+# base image
 FROM python:3
-ENV PYTHONDONTWRITEBYTECODE=1
-ENV PYTHONUNBUFFERED=1
-WORKDIR /code
-COPY requirements.txt /code/
-RUN pip install djangorestframework
+
+# The enviroment variable ensures that the python output is set straight
+# to the terminal with out buffering it first
+ENV PYTHONBUFFERED 1
+
+#directory to store app source code
+RUN mkdir /app
+
+#switch to /app directory so that everything runs from here
+WORKDIR /app
+
+#copy the app code to image working directory
+COPY ./app /app
+COPY requirements.txt /app/
+
+#let pip install required packages
 RUN pip install -r requirements.txt
-COPY . /code/
